@@ -20,20 +20,20 @@ const ChatMessage = ({sender, message, isOwnMessage} : ChatMessageProps) => {
         : isOwnMessage 
         ? "justify-end" 
         : "justify-start"
-      } mb-3}`}
+      } mb-1}`}
     >
       {/* control color */}
       <div className={`
-        max-w-xs px-4 py-2 
+        max-w-xs px-4 
         `}>
         <div className={`max-w-xs px-4 py-2 rounded-lg`}>
           {/* sender name */}
-          {!isSystemMessage && !isOwnMessage && <p className='text-sm font-bold py-2'>{getDisplayUserName(sender)}</p>}
+          {!isSystemMessage && !isOwnMessage && <p className='text-sm font-bold py-1'>{getDisplayUserName(sender)}</p>}
            {/* message */}
           <p className={`
-            px-4 py-2 rounded-lg 
+            px-4 py-1 rounded-lg break-words
             ${isSystemMessage 
-              ? "bg-gray-800 text-white text-center text-xs" 
+              ? "bg-gray-800 text-white text-center text-xs py-2" 
               : isOwnMessage
               ? "bg-blue-500 text-white"
               : "bg-white text-black"

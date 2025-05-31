@@ -59,16 +59,10 @@ export default function ChatPage() {
       setMessages(prev => [...prev, data]);
     });
 
-    // [connection-level] state_change event
-    const stateChangeHandler = (states: { previous: string; current: string }) => {
-      console.log(`[PUSHER] User "${userName}" connection: ${states.previous} → ${states.current}`);
-    };
-    pusherClient.connection.bind("state_change", stateChangeHandler);
-
-    // Channel subscripted
+    // Channel subscripted (join room)
     channel.bind('pusher:subscription_succeeded', async function() {
       console.log(`${userName} subscription_succeeded`)
-      handleSendMessage(`${getDisplayUserName(userName)} has connected`, "system")
+      handleSendMessage(`${getDisplayUserName(userName)} appeared.`, "system")
     });
     
     // [connection-level] error event
@@ -78,15 +72,46 @@ export default function ChatPage() {
     pusherClient.connection.bind("error", errorHandler);
 
     return () => {
+      // exit message
+      (async () => {
+        await handleSendMessage(`${getDisplayUserName(userName)} vanished`, "system");
+      })();
+
       // Clean up things one by one
       channel.unbind_all(); // remove all events
       channel.unsubscribe(); // discconect channel
 
       // unbind connection level event
-      pusherClient.connection.unbind("state_change", stateChangeHandler); 
       pusherClient.connection.unbind("error", errorHandler);
     };
   }, [userName, handleSendMessage]);
+
+
+  // For user leaving
+  useEffect(() => {
+    if (!joined || !userName) return
+    const handleUnload  = () => {
+      // create payload
+      const payload = {
+        sender : "system",
+        message : `${getDisplayUserName(userName)} vanished`
+      }
+      // send a beacon to send a message to the channel
+      navigator.sendBeacon(
+        "/api/send-message",
+        new Blob([JSON.stringify(payload)], { type: "application/json" })
+      )
+    }
+
+    // Listen to page unload
+    window.addEventListener("beforeunload",  handleUnload)
+    
+    // clearn up
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload)
+    }
+  }, [joined, userName])
+
 
   return (
     <div className="flex mt-24 justify-center w-full " >
@@ -98,7 +123,9 @@ export default function ChatPage() {
       ) : 
       ( <div className="w-full max-w-3xl mx-auto">
         <h1 className="mb-4 text-2xl font-bold">Room: 1</h1>
-        <ChatRoom>
+        <ChatRoom 
+        messages={messages}
+        >
         {messages.map((m, index) => (
           <ChatMessage
             key={index}
