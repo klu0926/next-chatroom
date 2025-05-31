@@ -7,6 +7,7 @@ import ChatMessage from '../components/ChatMessage'
 import JoinForm from '../components/JoinForm'
 import { useState, useEffect, useCallback } from 'react'
 import { pusherClient } from "@/lib/pusher-client";
+import { createUserName, getDisplayUserName} from '../util/userName'
 
 export default function ChatPage() {
 
@@ -21,8 +22,6 @@ export default function ChatPage() {
 
     // -------- FUNCTIONS
   // Use in JoinForm
-
-  // Use in JoinForm
   function handleJoinRoom(userName : string){
     // check has username
     if (userName.trim() === "") {
@@ -30,8 +29,10 @@ export default function ChatPage() {
       setJoinError("Please enter username")
       return
     }
+
+    // Create unique userName
     setJoinError("")
-    setUserName(userName)
+    setUserName(createUserName(userName))
     setJoined(true) // joined
   }
 
@@ -43,7 +44,7 @@ export default function ChatPage() {
     });
     console.log(`[SENDER] ${sender} [MESSAGE] ${message}`)
   }, [userName] );
-  
+
 
   // ----- Join socket channel and listen to event
   useEffect(() => {
@@ -67,8 +68,7 @@ export default function ChatPage() {
     // Channel subscripted
     channel.bind('pusher:subscription_succeeded', async function() {
       console.log(`${userName} subscription_succeeded`)
-
-      handleSendMessage(`${userName} has connected`, "system")
+      handleSendMessage(`${getDisplayUserName(userName)} has connected`, "system")
     });
     
     // [connection-level] error event
@@ -79,13 +79,12 @@ export default function ChatPage() {
 
     return () => {
       // Clean up things one by one
-      channel.unbind_all(); // remove channel events
+      channel.unbind_all(); // remove all events
       channel.unsubscribe(); // discconect channel
 
       // unbind connection level event
-      pusherClient.connection.unbind("state_change", stateChangeHandler);  // remove this connection event
+      pusherClient.connection.unbind("state_change", stateChangeHandler); 
       pusherClient.connection.unbind("error", errorHandler);
-
     };
   }, [userName, handleSendMessage]);
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { getDisplayUserName } from '../util/userName'
 
 interface ChatMessageProps {
   sender : string
@@ -27,7 +28,7 @@ const ChatMessage = ({sender, message, isOwnMessage} : ChatMessageProps) => {
         `}>
         <div className={`max-w-xs px-4 py-2 rounded-lg`}>
           {/* sender name */}
-          {!isSystemMessage && !isOwnMessage && <p className='text-sm font-bold py-2'>{sender}</p>}
+          {!isSystemMessage && !isOwnMessage && <p className='text-sm font-bold py-2'>{getDisplayUserName(sender)}</p>}
            {/* message */}
           <p className={`
             px-4 py-2 rounded-lg 
