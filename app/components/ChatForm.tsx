@@ -1,28 +1,35 @@
 'use client'
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 
 
 const ChatForm = ({
   // Let parent know the message (to display it)
-  onSendMessage
+  onSendMessage, 
 } : {
-   onSendMessage: (message : string) => void
+   onSendMessage: (message : string, sender : string) => void
   }) => {
   // form message
   const [message, setMessage] = useState("")
+
+  const inputRef = useRef<HTMLInputElement>(null)
+
 
   // Handle form subbmit
   const handleSubbmit= (e:React.FormEvent) => {
     e.preventDefault()
     if (message.trim() !== ""){
-      onSendMessage(message)  
+      onSendMessage(message, "")  
       setMessage("")
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
     }
   }
  
   return (
     <form className='flex gap-2 mt-4' onSubmit={handleSubbmit}>
       <input 
+      ref={inputRef}
        type="text" 
        onChange={(e) => setMessage(e.target.value)}
        className="flex-1 px-4 border-1 py-2 rounded-lg focus:outline-none"

@@ -23,19 +23,21 @@ const ChatMessage = ({sender, message, isOwnMessage} : ChatMessageProps) => {
     >
       {/* control color */}
       <div className={`
-        max-w-xs px-4 py-2 rounded-lg 
-        ${isSystemMessage 
-          ? "bg-gray-800 text-white text-center text-xs" 
-          : isOwnMessage
-          ? "bg-blue-500 text-white"
-          : "bg-white text-black"
-        }
+        max-w-xs px-4 py-2 
         `}>
         <div className={`max-w-xs px-4 py-2 rounded-lg`}>
           {/* sender name */}
-          {!isSystemMessage && <p className='text-sm font-bold'>{sender}</p>}
+          {!isSystemMessage && !isOwnMessage && <p className='text-sm font-bold py-2'>{sender}</p>}
            {/* message */}
-          <p>{message}</p>
+          <p className={`
+            px-4 py-2 rounded-lg 
+            ${isSystemMessage 
+              ? "bg-gray-800 text-white text-center text-xs" 
+              : isOwnMessage
+              ? "bg-blue-500 text-white"
+              : "bg-white text-black"
+            }
+            `}>{message}</p>
         </div>
       </div>
       </div>
