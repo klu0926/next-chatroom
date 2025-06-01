@@ -3,11 +3,12 @@
 ![Home Page](public/screenshot/welcome.png)
 
 ## Live Demo
- [https://next-chatroom-t6xk.vercel.app](https://next-chatroom-t6xk.vercel.app)
+
+[https://next-chatroom-t6xk.vercel.app](https://next-chatroom-t6xk.vercel.app)
 
 ## Overview
 
-This is a simple chatroom web application built using **Next.js** and **Tailwind CSS**. The project demonstrates the development skills including: 
+This is a simple chatroom web application built using **Next.js** and **Tailwind CSS**. The project demonstrates the development skills including:
 
 - Component-based architecture
 - Props and state management
@@ -27,17 +28,21 @@ This is a simple chatroom web application built using **Next.js** and **Tailwind
 - Tailwind CSS for styling
 
 ## Screenshots
+
+### Home Page with welcome message
+
 ![Home Page](public/screenshot/welcome.png)
-Home Page with welcome message
+
+### Join Form with validation
 
 ![Join Form](public/screenshot/validation.png)
-Join Form with validation
+
+### Live chating with mutiple users
 
 ![Chat Room](public/screenshot/chatroom2.png)
-Live chating with mutiple users
-
 
 ## Getting Started
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 First, run the development server:
@@ -51,4 +56,5 @@ pnpm dev
 # or
 bun dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
