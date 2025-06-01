@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono,  } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
-import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,6 +16,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Chatterly",
   description: "Chat. Connect. Fall in love.",
+  icons: [
+    { rel: "icon", url: "/favicon/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    { rel: "icon", url: "/favicon/favicon.svg", type: "image/svg+xml" },
+    { rel: "apple-touch-icon", url: "/favicon/apple-touch-icon.png", sizes: "180x180" },
+    { rel: "shortcut icon", url: "/favicon/favicon.ico" },
+  ],
+  manifest: "/favicon/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -26,14 +32,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-      <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
-      <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
-      <link rel="shortcut icon" href="/favicon/favicon.ico" />
-      <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
-      <meta name="apple-mobile-web-app-title" content="Chatterly" />
-      <link rel="manifest" href="/favicon/site.webmanifest" />
-      </Head>
       <body
         className={`bg-pink-50 ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
