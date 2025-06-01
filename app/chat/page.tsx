@@ -16,7 +16,7 @@ export default function ChatPage() {
 
   // ChatRoom
   const [messages, setMessages]= useState<
-  {sender: string, message: string}[]>([]);
+  {sender: string, message: string, avatar? : string}[]>([]);
   const [userName, setUserName] = useState("")
   const [avatar, setAvatar] = useState("")
 
