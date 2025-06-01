@@ -37,7 +37,7 @@ This is a simple chatroom web application built using **Next.js** and **Tailwind
 
 ![Join Form](public/screenshot/validation.png)
 
-### Live chating with mutiple users
+### Live chatting with multiple users
 
 ![Chat Room](public/screenshot/chatroom2.png)
 
