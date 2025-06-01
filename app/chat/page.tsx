@@ -8,42 +8,45 @@ import JoinForm from '../components/JoinForm'
 import { useState, useEffect, useCallback } from 'react'
 import { pusherClient } from "@/lib/pusher-client";
 import { createUserName, getDisplayUserName} from '../util/userName'
+import Image from 'next/image'
 
 export default function ChatPage() {
 
   const [joined, setJoined] = useState(false)
-  const [joinError, setJoinError] = useState("")
 
   // ChatRoom
   const [messages, setMessages]= useState<
   {sender: string, message: string}[]>([]);
   const [userName, setUserName] = useState("")
+  const [avatar, setAvatar] = useState("")
 
 
     // -------- FUNCTIONS
   // Use in JoinForm
   function handleJoinRoom(userName : string){
-    // check has username
-    if (userName.trim() === "") {
-      // set error message to join form
-      setJoinError("Please enter username")
-      return
-    }
-
-    // Create unique userName
-    setJoinError("")
     setUserName(createUserName(userName))
     setJoined(true) // joined
   }
 
-  const handleSendMessage = useCallback(async (message : string, sender? : string) => {
+  const handleSendMessage = useCallback(async (message : string, sender? : string, avatar? : string) => {
     if (sender === "") sender = userName
+
     await fetch("/api/send-message", {
       method: "POST",
-      body: JSON.stringify({ sender, message }),
+      body: JSON.stringify({ sender, message, avatar }),
     });
-    console.log(`[SENDER] ${sender} [MESSAGE] ${message}`)
   }, [userName] );
+
+  // ----- Get a random avatar
+  useEffect( () => {
+    const fetchAvatarPath = async ()=> {
+      const response = await fetch("/api/avatars")
+      const path = await response.json()
+      setAvatar(path)
+    }
+
+    fetchAvatarPath()
+  }, [])
 
 
   // ----- Join socket channel and listen to event
@@ -61,8 +64,7 @@ export default function ChatPage() {
 
     // Channel subscripted (join room)
     channel.bind('pusher:subscription_succeeded', async function() {
-      console.log(`${userName} subscription_succeeded`)
-      handleSendMessage(`${getDisplayUserName(userName)} appeared.`, "system")
+      handleSendMessage(`${getDisplayUserName(userName)} appeared`, "system")
     });
     
     // [connection-level] error event
@@ -114,15 +116,27 @@ export default function ChatPage() {
 
 
   return (
-    <div className="flex mt-24 justify-center w-full " >
+    <div className="flex justify-center items-start min-w-screen min-h-screen bg-pink-50" >
       {!joined ? (
-        <JoinForm
+        <div className='mt-55'>
+         <JoinForm
         onJoinRoom={handleJoinRoom}
-        errorMessage={joinError}
-        ></JoinForm> 
+        ></JoinForm>
+        </div>
       ) : 
-      ( <div className="w-full max-w-3xl mx-auto">
-        <h1 className="mb-4 text-2xl font-bold">Room: 1</h1>
+      ( <div className="w-full max-w-3xl mx-auto p-5">
+        <div className='flex gap-2 w-full justify-center'>
+            <div>
+              <Image
+                  src={avatar}
+                  alt="avatar"
+                  width={35}
+                  height={35}  
+                />
+            </div>
+            <h1 className="mb-4 text-2xl text-pink-400 font-bold">{getDisplayUserName(userName)}</h1>
+        </div>
+
         <ChatRoom 
         messages={messages}
         >
@@ -131,11 +145,13 @@ export default function ChatPage() {
             key={index}
             sender={m.sender}
             message={m.message}
+            avatar={m.avatar}
             isOwnMessage={m.sender === userName}
           />
         ))}
         </ChatRoom>
          <ChatForm 
+         avatar={avatar}
          onSendMessage={handleSendMessage}/>
         </div>)
       }

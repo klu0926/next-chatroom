@@ -20,7 +20,7 @@ const ChatRoom = ({children, messages} : ChatRoomProps) => {
 
   return (
   <div 
-  className="h-[500px] overflow-y-auto p-4 bg-gray-200 rounded-lg"
+  className="h-[500px] overflow-y-auto py-4 px-2 bg-pink-200 rounded-lg shadow-inner-lg"
   ref={divRef}
   >
         {children}

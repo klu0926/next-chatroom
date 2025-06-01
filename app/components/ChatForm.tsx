@@ -5,8 +5,10 @@ import React, { useState, useRef } from "react"
 const ChatForm = ({
   // Let parent know the message (to display it)
   onSendMessage, 
+  avatar
 } : {
-   onSendMessage: (message : string, sender : string) => void
+   onSendMessage: (message : string, sender : string, avatar: string) => void,
+   avatar : string
   }) => {
   // form message
   const [message, setMessage] = useState("")
@@ -18,7 +20,7 @@ const ChatForm = ({
   const handleSubbmit= (e:React.FormEvent) => {
     e.preventDefault()
     if (message.trim() !== ""){
-      onSendMessage(message, "")  
+      onSendMessage(message, "", avatar)  
       setMessage("")
       if (inputRef.current) {
         inputRef.current.value = "";
@@ -32,11 +34,10 @@ const ChatForm = ({
       ref={inputRef}
        type="text" 
        onChange={(e) => setMessage(e.target.value)}
-       className="flex-1 px-4 border-1 py-2 rounded-lg focus:outline-none"
+       className="w-full px-4 py-2 border-2 border-pink-200 rounded-lg bg-white focus:border-pink-400 focus:outline-none"
        placeholder='Message here...' />
-
        <button 
-       className="px-4 py-2 text-white rounded-lg bg-blue-500 hover:bg-blue-400 cursor-pointer"
+       className="px-4 py-2 text-white rounded-lg bg-pink-400 hover:bg-pink-500 hover:scale-95 transition ease-in-out cursor-pointer shadow-lg"
        type="submit"
        >Send</button>
     </form>
