@@ -25,8 +25,8 @@ export default function Home() {
         </div>
      
       <p className="font-bold text-pink-400">Chat. Connect. Fall in love.</p>
-       <Link href="/chat">
-          <button className="font-bold bg-pink-400 text-white px-4 py-2 rounded my-3 cursor-pointer w-50 drop-shadow-lg hover:bg-pink-500 hover:scale-99 transition ease-in-out">
+       <Link href="/chat" passHref>
+          <button className="font-bold bg-pink-400 text-white px-4 py-2 my-3 cursor-pointer w-50 rounded-2xl drop-shadow-lg hover:bg-pink-500 hover:scale-99 transition ease-in-out">
             Start Chat
           </button>
       </Link>

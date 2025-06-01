@@ -9,6 +9,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { pusherClient } from "@/lib/pusher-client";
 import { createUserName, getDisplayUserName} from '../util/userName'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function ChatPage() {
 
@@ -125,7 +126,11 @@ export default function ChatPage() {
         </div>
       ) : 
       ( <div className="w-full max-w-3xl mx-auto p-5">
-        <div className='flex gap-2 w-full justify-center'>
+        <div className='relative flex gap-2 w-full justify-center'>
+
+          <Link href="/" passHref>
+            <button className='absolute left-0 bg-pink-400 text-white text-sm rounded py-1 px-2 hover:bg-pink-500 hover:scale-95 shadow-md cursor-pointer transition ease-in-out'>Leave</button>
+        </Link>
             <div>
               <Image
                   src={avatar}
